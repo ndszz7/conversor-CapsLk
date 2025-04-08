@@ -1,202 +1,245 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Conversor de Texto Inteligente</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background: url('img/image.png') no-repeat center center fixed;
-            background-size: cover;
-            color: white;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Conversor de Texto Inteligente</title>
+  <style>
+    :root {
+      --bg-dark: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      --bg-light: linear-gradient(to right, #e0eafc, #cfdef3);
+      --text-dark: #ffffff;
+      --text-light: #111111;
+      --accent: #00aaff;
+    }
 
-        body::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: -1;
-        }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: start;
+      min-height: 100vh;
+      padding: 30px 15px;
+      transition: all 0.5s ease;
+    }
 
-        .container {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 20px;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 600px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-            position: relative;
-            z-index: 1;
-        }
+    .container {
+      width: 100%;
+      max-width: 700px;
+      background: rgba(255,255,255,0.05);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.4);
+      backdrop-filter: blur(6px);
+    }
 
-        h2 {
-            text-shadow: 2px 2px 4px black;
-        }
+    h1 {
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 3px solid var(--accent);
+      animation: typing 3s steps(30, end), blink 0.7s infinite;
+    }
 
-        textarea {
-            width: 100%;
-            height: 120px;
-            font-size: 16px;
-            padding: 10px;
-            border: none;
-            border-radius: 8px;
-            resize: none;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            outline: none;
-        }
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 100% }
+    }
 
-        button {
-            font-size: 16px;
-            padding: 12px 20px;
-            margin: 5px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: 0.3s;
-            font-weight: bold;
-        }
+    @keyframes blink {
+      50% { border-color: transparent }
+    }
 
-        .btn-formatar { background: #28a745; color: white; }
-        .btn-maiusculo { background: #007bff; color: white; }
-        .btn-minusculo { background: #ff5733; color: white; }
-        .btn-formatar:hover { background: #218838; }
-        .btn-maiusculo:hover { background: #0056b3; }
-        .btn-minusculo:hover { background: #c0392b; }
+    textarea {
+      width: 100%;
+      height: 120px;
+      border-radius: 10px;
+      border: none;
+      padding: 15px;
+      font-size: 16px;
+      resize: none;
+      background-color: rgba(255,255,255,0.1);
+      color: inherit;
+      margin-bottom: 15px;
+      outline: none;
+    }
 
-        .social-container {
-            margin-top: 20px;
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-        }
+    button {
+      padding: 10px 20px;
+      margin: 5px 4px;
+      font-size: 14px;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
 
-        .social-icon {
-            width: 50px;
-            height: 50px;
-            transition: transform 0.3s;
-        }
+    .btn-primary { background-color: #007bff; color: white; }
+    .btn-success { background-color: #28a745; color: white; }
+    .btn-danger { background-color: #dc3545; color: white; }
+    .btn-export { background-color: #ffc107; color: black; }
 
-        .social-icon:hover {
-            transform: scale(1.1);
-        }
+    button:hover {
+      transform: scale(1.05);
+      opacity: 0.9;
+    }
 
-        .social-link {
-            text-decoration: none;
-        }
+    .linha {
+      margin-top: 10px;
+      padding: 10px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 10px;
+    }
 
-        .username {
-            margin-top: 10px;
-            font-size: 18px;
-            font-weight: bold;
-            color: white;
-        }
+    .linha p {
+      margin: 0;
+    }
 
-        /* Estilo das linhas transformadas */
-        .linha {
-            margin-top: 10px;
-            padding: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-        }
+    .linha span {
+      display: block;
+      opacity: 0.8;
+    }
 
-        .texto {
-            color: white;
-        }
-    </style>
+    .theme-toggle {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      background: var(--accent);
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 50%;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    @media(max-width: 600px) {
+      h1 {
+        font-size: 22px;
+      }
+
+      .container {
+        padding: 20px;
+      }
+    }
+  </style>
 </head>
 <body>
+  <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
 
-    <div class="container">
-        <h2>Conversor de Texto Inteligente</h2>
-        <textarea id="inputTexto" placeholder="Digite ou cole um texto aqui..."></textarea>
-        <br>
-        <button class="btn-formatar" onclick="processarTexto()">Gerar Linhas Convertidas</button>
-        <button class="btn-maiusculo" onclick="transformarTudoMaiusculo()">Transformar Tudo em Maiúsculo</button>
-        <button class="btn-minusculo" onclick="transformarTudoMinusculo()">Transformar Tudo em Minúsculo</button>
-        
-        <div id="container"></div>
+  <div class="container">
+    <h1 id="typing">Conversor de Texto Inteligente</h1>
+    <textarea id="inputTexto" placeholder="Digite ou cole a letra aqui..."></textarea>
+    <div>
+      <button class="btn-success" onclick="processarTexto()">Formatar Texto</button>
+      <button class="btn-primary" onclick="transformarTudoMaiusculo()">MAIÚSCULO</button>
+      <button class="btn-danger" onclick="transformarTudoMinusculo()">minúsculo</button>
+      <button class="btn-export" onclick="exportarTexto()">⬇️ Exportar .txt</button>
     </div>
-
-    <div class="social-container">
-        <a href="https://www.instagram.com/ndszz7" target="_blank" class="social-link">
-            <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram" class="social-icon">
-        </a>
-        <a href="https://www.tiktok.com/@yndszz7" target="_blank" class="social-link">
-            <img src="https://cdn-icons-png.flaticon.com/512/3046/3046127.png" alt="TikTok" class="social-icon">
-        </a>
-        <a href="https://wa.me/559285340003" target="_blank" class="social-link">
-            <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp" class="social-icon">
-        </a>
-        <a href="https://www.capcut.com/profile/REs3hL9VU_7AND1en8JDjF4ZjGwYb1k7ozBSSpv7gbs" target="_blank" class="social-link">
-            <img src="https://freelogopng.com/images/all_img/1664284836cap-cut-logo-png.png" alt="CapCut" class="social-icon">
-        </a>
+    <div style="margin-top: 10px;">
+      <label for="idioma">Traduzir para:</label>
+      <select id="idioma">
+        <option value="pt">Português</option>
+        <option value="en">Inglês</option>
+        <option value="es">Espanhol</option>
+      </select>
+      <button onclick="traduzirTexto()" class="btn-primary">Traduzir</button>
     </div>
+    <div id="container"></div>
+  </div>
 
-    <div class="username">yNdszz7</div>
+  <script>
+    function formatarTexto(linha) {
+      return linha
+        .toLowerCase()
+        .replace(/(^|\.\s+)([a-z])/g, (m, a, l) => a + l.toUpperCase())
+        .replace(/\b(deus)\b/g, "Deus")
+        .replace(/\b(i|eu|você|ele|ela|nós|eles|elas)\b/g, match => match.charAt(0).toUpperCase() + match.slice(1));
+    }
 
-    <script>
-        function formatarTexto(texto) {
-            return texto
-                .toLowerCase()
-                .replace(/(^|\.\s+)([a-z])/g, (match, antes, letra) => antes + letra.toUpperCase()) 
-                .replace(/\b(deus)\b/g, "Deus") 
-                .replace(/\b(i|eu|você|ele|ela|nós|eles|elas)\b/g, match => match.charAt(0).toUpperCase() + match.slice(1));
+    function exibirTextoOriginal(transformacao) {
+      const container = document.getElementById("container");
+      container.innerHTML = "";
+      const texto = document.getElementById("inputTexto").value;
+      const linhas = texto.split("\n");
+
+      linhas.forEach(linha => {
+        if (linha.trim() !== "") {
+          const linhaTransformada = transformacao(linha);
+          const divLinha = document.createElement("div");
+          divLinha.className = "linha";
+          divLinha.innerHTML = `<p>${linhaTransformada}</p>`;
+          container.appendChild(divLinha);
         }
+      });
+    }
 
-        function exibirTextoTransformado(transformacao) {
-            const container = document.getElementById("container");
-            container.innerHTML = ""; 
+    function processarTexto() {
+      exibirTextoOriginal(formatarTexto);
+    }
 
-            const texto = document.getElementById("inputTexto").value;
-            const linhas = texto.split("\n");
+    function transformarTudoMaiusculo() {
+      exibirTextoOriginal(l => l.toUpperCase());
+    }
 
-            linhas.forEach(linha => {
-                if (linha.trim() !== "") { 
-                    const linhaTransformada = transformacao(linha);
+    function transformarTudoMinusculo() {
+      exibirTextoOriginal(l => l.toLowerCase());
+    }
 
-                    const divLinha = document.createElement("div");
-                    divLinha.className = "linha";
+    function exportarTexto() {
+      const container = document.getElementById("container");
+      let textoFinal = '';
+      container.querySelectorAll('.linha').forEach(div => {
+        textoFinal += div.textContent + '\n';
+      });
 
-                    const spanTexto = document.createElement("span");
-                    spanTexto.className = "texto";
-                    spanTexto.textContent = linhaTransformada;
+      const blob = new Blob([textoFinal], { type: "text/plain" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "texto_convertido.txt";
+      link.click();
+    }
 
-                    divLinha.appendChild(spanTexto);
-                    container.appendChild(divLinha);
-                }
-            });
-        }
+    async function traduzirTexto() {
+      const idioma = document.getElementById("idioma").value;
+      const texto = document.getElementById("inputTexto").value;
+      const linhas = texto.split("\n");
 
-        function processarTexto() {
-            exibirTextoTransformado(formatarTexto);
-        }
+      const response = await fetch("/traduzir", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ linhas, idioma })
+      });
 
-        function transformarTudoMaiusculo() {
-            exibirTextoTransformado(linha => linha.toUpperCase());
-        }
+      const traducoes = await response.json();
+      const container = document.getElementById("container");
+      container.innerHTML = "";
 
-        function transformarTudoMinusculo() {
-            exibirTextoTransformado(linha => linha.toLowerCase());
-        }
-    </script>
+      for (let i = 0; i < linhas.length; i++) {
+        const original = linhas[i];
+        const traduzida = traducoes[i];
+        if (original.trim() === "") continue;
 
+        const div = document.createElement("div");
+        div.className = "linha";
+        div.innerHTML = `<p><strong>${original}</strong><br><span>${traduzida}</span></p>`;
+        container.appendChild(div);
+      }
+    }
+
+    function toggleTheme() {
+      const body = document.body;
+      const isDark = body.style.background.includes("0f2027");
+      body.style.background = isDark ? "var(--bg-light)" : "var(--bg-dark)";
+      body.style.color = isDark ? "var(--text-light)" : "var(--text-dark)";
+    }
+  </script>
 </body>
 </html>
